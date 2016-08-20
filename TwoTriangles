@@ -8,7 +8,22 @@ void main( void ) //for( each pixel p )
 vec2 offset = magicFormula(p, time);
 gl_FragColor = texture2D(texture, offset);
 }
+//dist = fourMagicColumns( p.x, p.y, p.z );
+//dist = fourMagicColumns( mod(p.x,1), p.y, mod(p.z,1) );
+//float dist = distanceToColumn(p);
+/*float twistedColumn( vec3 p )
+{
+vec3 q = rotateY(p, p.y*1.7);
+return distanceToColumn(q);
+}/*
 
+
+/*float rr = dot(p.xy,p.xy);
+for( int i=0; i<6; i++ )
+{
+vec3 q = rotateY( p, TWOPI*i/6.0 );
+distance = min( distance, distanceToTheXAxis(q) );
+}/*
 
 float combinedDistanceField( vec3 p )
 {
@@ -17,3 +32,41 @@ float dist2 = distanceField_A( M2inv*p );
 float dist3 = distanceField_B( M3inv*p );
 return min( dist1, min( dist2, dist3 ) );
 }
+
+float rr = dot(p.xy,p.xy);
+for( int i=0; i<6; i++ )
+{
+vec3 q = rotateY( p, TWOPI*i/6.0 );
+q.y += 0.6*rr*exp2(-10.0*rr);
+distance = min( distance, distanceToTheXAxis(q) );
+}
+
+float rr = dot(p.xy,p.xy);
+for( int i=0; i<6; i++ )
+{
+vec3 q = rotateY( p, TWOPI*i/6.0 + 0.4*rr*noise2f(vec3(4*rr,6.3*i)) );
+q.y += 0.6*rr*exp2(-10.0*rr);
+distance = min( distance, distanceToTheXAxis(q) );
+}
+
+float distanceToMonster( vec3 p )
+{
+float dist1 = distanceToBall(p);
+float dist2 = distanceToTentacles(p);
+float bfact = smoothstep( length(p), 0, 1 );
+return mix( dist1, dist2, bfact );
+}
+
+dist = distanceToColmuns(p);
+
+dist = distanceToColmuns(p) + 0.000001*clamp(fbm(p), 0, 1);
+
+n = normalize( grad( distance, p) ) + bump*grad( fbm, p) ) );
+• bump is small and depend on the material.
+• grad( func, p ) = normalize(
+func(p+{eps,0,0}) - func(p-{eps,0,0}),
+func(p+{0,eps,0}) - func(p-{0,eps,0}),
+func(p+{0,0,eps}) - func(p-{0,0,eps}) );
+
+(“Fast
+Approximation for Global Illumnation on Dynamic Scenes”, 2006).
