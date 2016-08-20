@@ -1,0 +1,4 @@
+for( each pixel p )
+{
+outputColor = doSomething( p );
+}
