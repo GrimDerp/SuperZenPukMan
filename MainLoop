@@ -1,0 +1,5 @@
+new public Array: Items
+new public Array: Maps
+new public Array: Levels
+new public bool:  HitDetect
+new public bool: Hit
