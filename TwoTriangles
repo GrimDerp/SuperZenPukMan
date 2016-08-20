@@ -2,3 +2,9 @@ for( each pixel p )
 {
 outputColor = doSomething( p );
 }
+
+void main( void ) //for( each pixel p )
+{
+vec2 offset = magicFormula(p, time);
+gl_FragColor = texture2D(texture, offset);
+}
